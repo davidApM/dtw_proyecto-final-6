@@ -19,7 +19,7 @@ class ControlController extends Controller
 
         // ADMINISTRADOR SISTEMA
         if($user->hasRole('admin')){
-            $ruta = 'admin.roles.index';
+            $ruta = 'libros.index';
         }
         else if($user->hasRole('usuario')){
             $ruta = 'admin.dashboard.index';
@@ -38,5 +38,5 @@ class ControlController extends Controller
     public function indexSinPermiso(){
         return view('errors.403');
     }
-
+ 
 }
