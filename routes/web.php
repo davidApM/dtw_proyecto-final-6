@@ -58,5 +58,13 @@ Route::get('sin-permisos', [ControlController::class,'indexSinPermiso'])->name('
 Route::get('/admin/dashboard', [DashboardController::class,'vistaDashboard'])->name('admin.dashboard.index');
 
 
+<<<<<<< HEAD
 // --- L I B R O S ---
 Route::resource('libros', LibroController::class);
+=======
+// --- Ruta para ver los libros ---
+Route::get('/admin/libros', function () {
+    return view('backend.admin.libros.listalibros');
+})->name('admin.libros.index');
+
+>>>>>>> d08f97a (Descripción clara y concisa de tus cambios)
