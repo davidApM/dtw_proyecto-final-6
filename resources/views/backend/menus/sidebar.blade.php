@@ -35,15 +35,33 @@
                                     <p>Usuario</p>
                                 </a>
                             </li>
-                            
+
                             <li class="nav-item">
                                 <a href="{{ route('libros.index') }}" target="frameprincipal" class="nav-link">
                                     <i class="fas fa-book nav-icon"></i>
                                     <p>Libros</p>
                                 </a>
-                            </li>                            
+                            </li>
 
                         </ul>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="far fa-edit"></i>
+                            <p>
+                                API´S
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('library-api') }}" target="frameprincipal">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>API Pública</p>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </li>
                     </li>
                 @endcan
 
