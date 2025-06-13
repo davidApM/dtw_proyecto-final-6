@@ -1,16 +1,19 @@
 {{-- @extends('layouts.app') --}}
 
-{{-- @section('content') --}}
-
 {{-- Cargar Bootstrap y estilos base (heredados del panel) --}}
 <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
 <link rel="stylesheet" href="{{ asset('fontawesome-free/css/all.min.css') }}">
 <link rel="stylesheet" href="{{ asset('css/adminlte.min.css') }}">
 
 <div class="container">
+    
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1>Listado de Libros</h1>
         <a href="{{ route('libros.create') }}" class="btn btn-success" target="frameprincipal">Agregar Libro</a>
+    </div>
+
+    <div class="mb-3">
+        <input type="text" id="busquedaLibro" class="form-control" placeholder="Buscar libro...">
     </div>
 
     @if(session('success'))
@@ -46,7 +49,8 @@
                 <td>
                     <a href="{{ route('libros.show', $libro) }}" class="btn btn-sm btn-info">Ver</a>
                     <a href="{{ route('libros.edit', $libro) }}" class="btn btn-sm btn-primary" target="frameprincipal">Editar</a>
-                    <form action="{{ route('libros.destroy', $libro) }}" method="POST" class="d-inline" onsubmit="return confirm('¿Estás seguro de eliminar este libro?');">
+                    <form action="{{ route('libros.destroy', $libro) }}" method="POST" class="d-inline"
+                          onsubmit="sessionStorage.setItem('mensajeLibro','¡Libro eliminado exitosamente!'); return confirm('¿Estás seguro de eliminar este libro?');">
                         @csrf
                         @method('DELETE')
                         <button class="btn btn-sm btn-danger">Eliminar</button>
@@ -67,5 +71,28 @@
 <script src="{{ asset('js/jquery.min.js') }}"></script>
 <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ asset('js/adminlte.min.js') }}"></script>
+<script>
+    const inputBusqueda = document.getElementById('busquedaLibro');
+
+    document.addEventListener('DOMContentLoaded', () => {
+        // –– LocalStorage: recuperar búsqueda
+        const valorGuardado = localStorage.getItem('busquedaLibro');
+        if (valorGuardado) {
+            inputBusqueda.value = valorGuardado;
+        }
+
+        // –– SessionStorage: mostrar mensaje (crear/editar/eliminar)
+        const mensaje = sessionStorage.getItem('mensajeLibro');
+        if (mensaje) {
+            alert(mensaje);
+            sessionStorage.removeItem('mensajeLibro');
+        }
+    });
+
+    // –– LocalStorage: guardar búsqueda al escribir
+    inputBusqueda.addEventListener('input', () => {
+        localStorage.setItem('busquedaLibro', inputBusqueda.value);
+    });
+</script>
 
 {{-- @endsection --}}
