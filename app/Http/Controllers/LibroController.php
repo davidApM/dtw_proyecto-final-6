@@ -39,7 +39,7 @@ class LibroController extends Controller
 
         Libro::create($validated);
 
-        return redirect()->route('backend.libros.index')->with('success', 'Libro creado correctamente.');
+        return redirect()->route('libros.index')->with('success', 'Libro creado correctamente.');
     }
 
 
@@ -75,7 +75,7 @@ class LibroController extends Controller
 
         $libro->update($validated);
 
-        return redirect()->route('backend.libros.index')->with('success', 'Libro actualizado correctamente.');
+        return redirect()->route('libros.index')->with('success', 'Libro actualizado correctamente.');
     }
 
 
@@ -85,7 +85,7 @@ class LibroController extends Controller
     public function destroy(Libro $libro)
     {
         $libro->delete();
-        return redirect()->route('backend.libros.index')->with('success', 'Libro eliminado correctamente.');
+        return redirect()->route('libros.index')->with('success', 'Libro eliminado correctamente.');
     }
 
 }

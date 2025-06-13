@@ -48,7 +48,6 @@
     @enderror
 </div>
 
-<button type="submit" class="btn btn-primary">Guardar</button>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
