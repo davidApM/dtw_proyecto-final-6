@@ -16,6 +16,12 @@
         #error-message {
             display: none;
         }
+
+        .modal-img {
+            width: 100%;
+            max-height: 80vh;
+            object-fit: contain;
+        }
     </style>
 </head>
 
@@ -48,6 +54,7 @@
                 <button type="submit" class="btn btn-primary w-100">Buscar</button>
             </div>
         </form>
+
         <div id="resultsCount" class="mb-2"></div>
         <div id="resultsContainer" class="row"></div>
 
@@ -82,11 +89,38 @@
         </div>
     </div>
 
+    {{--  Modal para mostrar solo la portada --}}
+    <div class="modal fade" id="coverModal" tabindex="-1" aria-labelledby="coverModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="coverModalLabel">Portada del Libro</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <img id="coverImage" class="modal-img" src="" alt="Portada del libro">
+                </div>
+            </div>
+        </div>
+    </div>
+
     {{-- Bootstrap JS y dependencias --}}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
     {{-- Axios --}}
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    {{-- Tu JS personalizado --}}
+
+    {{-- modal para portada --}}
+    <script>
+        function showCoverModal(coverUrl) {
+            const coverImg = document.getElementById('coverImage');
+            coverImg.src = coverUrl;
+            const modal = new bootstrap.Modal(document.getElementById('coverModal'));
+            modal.show();
+        }
+    </script>
+
+    {{--JS personalizado --}}
     <script src="{{ asset('js/library.js') }}"></script>
 </body>
 

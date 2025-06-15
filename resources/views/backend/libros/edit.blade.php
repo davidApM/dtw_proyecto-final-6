@@ -17,7 +17,7 @@
 <div class="container">
     <h1>Editar Libro</h1>
     
-    <form id="form-libro" action="{{ route('libros.update', $libro) }}" method="POST">
+    <form id="form-libro" action="{{ route('libros.update', $libro) }}" method="POST"enctype="multipart/form-data">>
         @csrf
         @method('PUT')
 

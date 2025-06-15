@@ -15,5 +15,6 @@ class Libro extends Model
         'genero',
         'anio',
         'estado',
+        'portada',
     ];
 }
