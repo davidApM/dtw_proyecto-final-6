@@ -10,18 +10,27 @@
 <div class="container">
     <h1>Detalle del Libro</h1>
 
-    <div class="card mb-3">
-        <div class="card-body">
-            <h5 class="card-title">{{ $libro->titulo }}</h5>
-            <p class="card-text"><strong>Autor:</strong> {{ $libro->autor }}</p>
-            <p class="card-text"><strong>Género:</strong> {{ $libro->genero }}</p>
-            <p class="card-text"><strong>Año:</strong> {{ $libro->anio }}</p>
-            <p class="card-text">
-                <strong>Estado:</strong>
-                <span class="badge {{ $libro->estado == 'disponible' ? 'bg-success' : 'bg-warning text-dark' }}">
-                    {{ ucfirst($libro->estado) }}
-                </span>
-            </p>
+    <div class="card mb-3" style="max-width: 700px;">
+        <div class="row g-0">
+            @if($libro->portada)
+                <div class="col-md-4">
+                    <img src="{{ asset('storage/' . $libro->portada) }}" class="img-fluid rounded-start" alt="Portada del libro">
+                </div>
+            @endif
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title">{{ $libro->titulo }}</h5>
+                    <p class="card-text"><strong>Autor:</strong> {{ $libro->autor }}</p>
+                    <p class="card-text"><strong>Género:</strong> {{ $libro->genero }}</p>
+                    <p class="card-text"><strong>Año:</strong> {{ $libro->anio }}</p>
+                    <p class="card-text">
+                        <strong>Estado:</strong>
+                        <span class="badge {{ $libro->estado == 'disponible' ? 'bg-success' : 'bg-warning text-dark' }}">
+                            {{ ucfirst($libro->estado) }}
+                        </span>
+                    </p>
+                </div>
+            </div>
         </div>
     </div>
 

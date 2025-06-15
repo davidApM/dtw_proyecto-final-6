@@ -6,7 +6,6 @@
 <link rel="stylesheet" href="{{ asset('css/adminlte.min.css') }}">
 
 <div class="container">
-    
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1>Listado de Libros</h1>
         <a href="{{ route('libros.create') }}" class="btn btn-success" target="frameprincipal">Agregar Libro</a>
@@ -25,6 +24,7 @@
         <thead class="table-light">
             <tr>
                 <th>ID</th>
+                <th>Portada</th>
                 <th>Título</th>
                 <th>Autor</th>
                 <th>Género</th>
@@ -37,6 +37,13 @@
             @foreach($libros as $libro)
             <tr>
                 <td>{{ $libro->id }}</td>
+                <td>
+                    @if($libro->portada)
+                        <img src="{{ asset('storage/' . $libro->portada) }}" alt="Portada" style="max-height: 50px; object-fit: cover; border-radius: 3px;">
+                    @else
+                        <span class="text-muted">Sin portada</span>
+                    @endif
+                </td>
                 <td>{{ $libro->titulo }}</td>
                 <td>{{ $libro->autor }}</td>
                 <td>{{ $libro->genero }}</td>
@@ -47,14 +54,25 @@
                     </span>
                 </td>
                 <td>
-                    <a href="{{ route('libros.show', $libro) }}" class="btn btn-sm btn-info">Ver</a>
-                    <a href="{{ route('libros.edit', $libro) }}" class="btn btn-sm btn-primary" target="frameprincipal">Editar</a>
-                    <form action="{{ route('libros.destroy', $libro) }}" method="POST" class="d-inline"
-                          onsubmit="sessionStorage.setItem('mensajeLibro','¡Libro eliminado exitosamente!'); return confirm('¿Estás seguro de eliminar este libro?');">
-                        @csrf
-                        @method('DELETE')
-                        <button class="btn btn-sm btn-danger">Eliminar</button>
-                    </form>
+                    <div class="d-flex gap-2 flex-wrap">
+                        <a href="{{ route('libros.show', $libro) }}" class="btn btn-sm btn-info d-flex align-items-center gap-1">
+                            @if($libro->portada)
+                                <img src="{{ asset('storage/' . $libro->portada) }}" alt="Portada" width="20" height="25" style="object-fit: cover; border-radius: 3px;">
+                            @endif
+                            Ver
+                        </a>
+
+                        <form action="{{ route('libros.edit', $libro) }}" method="GET" class="d-inline">
+                            <button type="submit" class="btn btn-sm btn-primary">Editar</button>
+                        </form>
+
+                        <form action="{{ route('libros.destroy', $libro) }}" method="POST" class="d-inline"
+                              onsubmit="sessionStorage.setItem('mensajeLibro','¡Libro eliminado exitosamente!'); return confirm('¿Estás seguro de eliminar este libro?');">
+                            @csrf
+                            @method('DELETE')
+                            <button class="btn btn-sm btn-danger">Eliminar</button>
+                        </form>
+                    </div>
                 </td>
             </tr>
             @endforeach
@@ -75,13 +93,13 @@
     const inputBusqueda = document.getElementById('busquedaLibro');
 
     document.addEventListener('DOMContentLoaded', () => {
-        // –– LocalStorage: recuperar búsqueda
+        // LocalStorage: recuperar búsqueda
         const valorGuardado = localStorage.getItem('busquedaLibro');
         if (valorGuardado) {
             inputBusqueda.value = valorGuardado;
         }
 
-        // –– SessionStorage: mostrar mensaje (crear/editar/eliminar)
+        // SessionStorage: mostrar mensaje (crear/editar/eliminar)
         const mensaje = sessionStorage.getItem('mensajeLibro');
         if (mensaje) {
             alert(mensaje);
@@ -89,7 +107,7 @@
         }
     });
 
-    // –– LocalStorage: guardar búsqueda al escribir
+    // LocalStorage: guardar búsqueda al escribir
     inputBusqueda.addEventListener('input', () => {
         localStorage.setItem('busquedaLibro', inputBusqueda.value);
     });
