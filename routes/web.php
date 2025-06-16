@@ -59,13 +59,8 @@ Route::get('/admin/dashboard', [DashboardController::class, 'vistaDashboard'])->
 
 // --- L I B R O S ---
 Route::resource('libros', LibroController::class);
-
-// --- Ruta para ver los libros ---
-Route::get('/admin/libros', function () {
-    return view('backend.admin.libros.listalibros');
-})->name('admin.libros.index');
-
 Route::get('/libros/{id}/portada', [LibroController::class, 'verPortada'])->name('libros.portada');
+
 
 //  --- V I D E O ---
 Route::get('/library-api', [LibraryAPIController::class, 'index'])->name('library-api');
