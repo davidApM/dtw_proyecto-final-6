@@ -38,7 +38,11 @@
             <tr>
                 <td>{{ $libro->id }}</td>
                 <td>
-                    @if($libro->portada)
+                    @php
+                        $rutaPortada = storage_path('app/public/' . $libro->portada);
+                    @endphp
+
+                    @if($libro->portada && file_exists($rutaPortada))
                         <img src="{{ asset('storage/' . $libro->portada) }}" alt="Portada" style="max-height: 50px; object-fit: cover; border-radius: 3px;">
                     @else
                         <span class="text-muted">Sin portada</span>
@@ -56,7 +60,7 @@
                 <td>
                     <div class="d-flex gap-2 flex-wrap">
                         <a href="{{ route('libros.show', $libro) }}" class="btn btn-sm btn-info d-flex align-items-center gap-1">
-                            @if($libro->portada)
+                            @if($libro->portada && file_exists($rutaPortada))
                                 <img src="{{ asset('storage/' . $libro->portada) }}" alt="Portada" width="20" height="25" style="object-fit: cover; border-radius: 3px;">
                             @endif
                             Ver
@@ -91,6 +95,7 @@
 <script src="{{ asset('js/adminlte.min.js') }}"></script>
 <script>
     const inputBusqueda = document.getElementById('busquedaLibro');
+    const tabla = document.querySelector('table tbody');
 
     document.addEventListener('DOMContentLoaded', () => {
         // LocalStorage: recuperar búsqueda
@@ -105,12 +110,35 @@
             alert(mensaje);
             sessionStorage.removeItem('mensajeLibro');
         }
+
+        // Aplicar filtro inicial en caso que haya valor guardado
+        filtrarTabla(valorGuardado);
     });
 
-    // LocalStorage: guardar búsqueda al escribir
+    // LocalStorage: guardar búsqueda al escribir y filtrar tabla
     inputBusqueda.addEventListener('input', () => {
         localStorage.setItem('busquedaLibro', inputBusqueda.value);
+        filtrarTabla(inputBusqueda.value);
     });
+
+    // Función para filtrar filas de la tabla según texto
+    function filtrarTabla(textoFiltro) {
+        const filtro = textoFiltro ? textoFiltro.toLowerCase() : '';
+        const filas = tabla.querySelectorAll('tr');
+
+        filas.forEach(fila => {
+            const textoFila = [...fila.cells]
+                .slice(0, fila.cells.length - 1)
+                .map(td => td.textContent.toLowerCase())
+                .join(' ');
+
+            if (textoFila.includes(filtro)) {
+                fila.style.display = '';
+            } else {
+                fila.style.display = 'none';
+            }
+        });
+    }
 </script>
 
 {{-- @endsection --}}

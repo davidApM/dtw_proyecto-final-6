@@ -1,35 +1,55 @@
-function crearLibro(libro) {
-  let libros = JSON.parse(localStorage.getItem('libros')) || [];
-  libros.push(libro);
-  localStorage.setItem('libros', JSON.stringify(libros));
-}
+document.addEventListener('DOMContentLoaded', function() {
+    const mensajeDiv = document.getElementById('mensaje-exito');
+    const errorDiv = document.getElementById('mensaje-error');
+    const form = document.getElementById('formCrearLibro');
 
-function mostrarLibros() {
-  const lista = document.getElementById('lista-libros');
-  let libros = JSON.parse(localStorage.getItem('libros')) || [];
-  lista.innerHTML = '';
-  libros.forEach(libro => {
-    let item = document.createElement('li');
-    item.textContent = `${libro.titulo} - ${libro.autor}`;
-    lista.appendChild(item);
-  });
-}
+    // Mostrar mensaje de éxito guardado en sessionStorage (y ocultarlo después)
+    const mensaje = sessionStorage.getItem('mensajeLibro');
+    if (mensaje && mensajeDiv) {
+        mensajeDiv.textContent = mensaje;
+        mensajeDiv.classList.remove('d-none');
+        sessionStorage.removeItem('mensajeLibro');
 
-document.addEventListener('DOMContentLoaded', () => {
-  mostrarLibros();
+        setTimeout(() => {
+            mensajeDiv.classList.add('d-none');
+        }, 4000);
+    }
 
-  const form = document.getElementById('formCrearLibro');
-  if (form) {
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const nuevoLibro = {
-        id: Date.now(),
-        titulo: form.titulo.value,
-        autor: form.autor.value,
-      };
-      crearLibro(nuevoLibro);
-      mostrarLibros();
-      form.reset();
+    // Autoguardado de campos en localStorage
+    const campos = ['titulo', 'autor', 'genero', 'anio', 'estado'];
+    campos.forEach(campo => {
+        const input = document.querySelector(`[name="${campo}"]`);
+        if (!input) return;
+
+        // Restaurar valor si existe
+        const saved = localStorage.getItem('libroCreate_' + campo);
+        if (saved) input.value = saved;
+
+        // Guardar al escribir
+        input.addEventListener('input', () => {
+            localStorage.setItem('libroCreate_' + campo, input.value);
+        });
     });
-  }
+
+    // Validación simple al enviar el formulario
+    form.addEventListener('submit', function(e) {
+        errorDiv.classList.add('d-none');
+        errorDiv.textContent = '';
+
+        const titulo = form.titulo.value.trim();
+        const autor = form.autor.value.trim();
+
+        if (!titulo || !autor) {
+            e.preventDefault();
+            errorDiv.textContent = 'Por favor, complete el título y el autor.';
+            errorDiv.classList.remove('d-none');
+            return false;
+        }
+
+        // Si pasa validación, limpiar localStorage y guardar mensaje en sessionStorage
+        campos.forEach(campo => {
+            localStorage.removeItem('libroCreate_' + campo);
+        });
+        sessionStorage.setItem('mensajeLibro', '¡Libro guardado exitosamente!');
+    });
 });
